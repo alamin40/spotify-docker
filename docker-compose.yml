@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  search:
+    image: search
+    env_file:
+      - ./microservices.env
+    networks:
+      - backend
+
+  charts:
+    image: chart
+    env_file:
+      - ./microservices.env
+    networks:
+      - backend
+
+  images:
+    image: image
+    env_file:
+      - ./microservices.env
+    networks:
+      - backend
+
+  web:
+    image: web
+    ports:
+      - "8080:8080"
+    depends_on:
+      - search
+      - charts
+      - images
+    networks:
+      - frontend
+      - backend
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+
